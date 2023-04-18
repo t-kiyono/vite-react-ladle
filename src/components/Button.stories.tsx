@@ -1,19 +1,41 @@
-import { Button } from "./Button";
+import { Story } from "@ladle/react";
+import { Button as ButtonComponent } from "./Button";
 
-export const Submit = () => (
-  <Button
-    className="font-sans bg-blue-600 text-white text-xl rounded-full p-2 w-full"
+interface ButtonParameter {
+  label: string;
+  size?: "small" | "medium" | "large";
+  disabled?: boolean;
+}
+export const Button: Story<ButtonParameter> = ({
+  label,
+  size = "medium",
+  disabled = false
+}) => (
+  <ButtonComponent
+    className={`${disabled ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-700"} ${
+      size === "small"
+        ? "px-2 py-1 text-sm"
+        : size === "medium"
+          ? "px-3 py-2 text-base"
+          : "px-6 py-3 text-xl"
+    }} font-sans text-white rounded-full w-full`}
     type="submit"
+    disabled={disabled}
   >
-    submit
-  </Button>
+    {label}
+  </ButtonComponent>
 );
 
-export const Reset = () => (
-  <Button
-    className="font-sans bg-red-600 text-white text-xl rounded-full p-2 w-full"
-    type="reset"
-  >
-    reset
-  </Button>
-);
+Button.args = {
+  label: "Submit",
+  disabled: false,
+  size: "medium",
+};
+
+Button.argTypes = {
+  size: {
+    control: { type: "radio" },
+    defaultValue: "medium",
+    options: ["small", "medium", "large"],
+  },
+};
